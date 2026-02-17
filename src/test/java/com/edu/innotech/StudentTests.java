@@ -1,19 +1,10 @@
 package com.edu.innotech;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.parsing.Parser;
-import lombok.SneakyThrows;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 import org.junit.jupiter.api.Assertions.*;
-import org.mockito.Mockito;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
 
-import javax.swing.text.Style;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,49 +28,50 @@ class StudentTests {
         student1.addGrade(lst.get(1));
         student1.addGrade(lst.get(2));
         student1.addGrade(lst.get(3));
-        assertEquals(lst, student1.getGrades());
+        assertEquals(lst, student1.getGrades(), "Оценки не совпадают с ожидаемыми значениями");
     }
 
     @ParameterizedTest(name = "добавление некорректных оценок")
     @MethodSource("com.edu.innotech.MarksGenerator#ints")
     public void marksNotInRange(int x) {
-        Exception ex = Assertions.assertThrows(IllegalArgumentException.class, () -> student1.addGrade(x));
+        Exception ex = Assertions.assertThrows(IllegalArgumentException.class, () -> student1.addGrade(x), "Ожидается исключение IllegalArgumentException для некорректной оценки");
     }
 
     @Test
     public void testEquals() {
-        assertEquals(student1, student2);
+        assertEquals(student1, student2, "Студенты не равны, хотя должны быть равны");
     }
+
     @Test
     public void testNotEquals() {
-        assertNotEquals(student1, student3);
+        assertNotEquals(student1, student3, "Студенты равны, хотя не должны быть равны");
     }
 
     @Test
     public void testHashCode() {
-        assertEquals(student1.hashCode(), student2.hashCode());
+        assertEquals(student1.hashCode(), student2.hashCode(), "Хэш-коды студентов не равны, хотя должны быть равны");
     }
 
     @Test
-    public void compareHashForDifferentObjects(){
-        assertNotEquals(student1.hashCode(), student3.hashCode());
+    public void compareHashForDifferentObjects() {
+        assertNotEquals(student1.hashCode(), student3.hashCode(), "Хэш-коды студентов равны, хотя не должны быть равны");
     }
 
     @Test
-    public void testToStringNotNull(){
-        assertNotNull(student1.toString());
+    public void testToStringNotNull() {
+        assertNotNull(student1.toString(), "Метод toString() вернул null");
     }
 
     @Test
-    public void testToStringContent(){
+    public void testToStringContent() {
         student1.addGrade(2);
         student1.addGrade(3);
         student1.addGrade(4);
 
-        assertTrue(student1.toString().contains("Peter"));
-        assertTrue(student1.toString().contains("2"));
-        assertTrue(student1.toString().contains("3"));
-        assertTrue(student1.toString().contains("4"));
+        assertTrue(student1.toString().contains("Peter"), "Метод toString() не содержит имя студента");
+        assertTrue(student1.toString().contains("2"), "Метод toString() не содержит оценку 2");
+        assertTrue(student1.toString().contains("3"), "Метод toString() не содержит оценку 3");
+        assertTrue(student1.toString().contains("4"), "Метод toString() не содержит оценку 4");
     }
 }
 

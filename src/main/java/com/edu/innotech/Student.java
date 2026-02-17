@@ -18,7 +18,7 @@ public class Student {
     }
 
     public List<Integer> getGrades() {
-        return Collections.unmodifiableList(grades);
+        return Collections.unmodifiableList(grades); //Исправление инкапсуляции
     }
 
     public void addGrade(int grade) {
